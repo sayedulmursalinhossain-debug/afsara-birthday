@@ -19,7 +19,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Ambient Night Sky & Aurora */
     #sky-bg {
       position: fixed;
       top: 0;
@@ -117,7 +116,7 @@
       opacity: 0;
       transition: opacity 2s ease-in-out;
       padding: 60px 20px 100px;
-      max-width: 900px;
+      max-width: 800px;
       margin: 0 auto;
       z-index: 10;
       position: relative;
@@ -136,7 +135,7 @@
       margin-bottom: 30px;
     }
 
-    /* Live Countdown Clock Styling */
+    /* Countdown Styling */
     .memorial-counter {
       margin: 30px auto;
       padding: 25px 20px;
@@ -184,7 +183,6 @@
       letter-spacing: 1px;
     }
 
-    /* Cards */
     .card {
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(10px);
@@ -210,49 +208,82 @@
       text-align: justify;
     }
 
-    /* Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .gallery img {
+    /* Animated Sequential Photo Container */
+    .animated-gallery {
+      position: relative;
       width: 100%;
-      height: 250px;
+      max-width: 450px;
+      height: 550px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .photo-slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.4s ease;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+      transition: all 1.2s ease-in-out;
     }
 
-    .gallery img:hover {
-      transform: scale(1.03);
+    .photo-slide.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
 
-    /* Ending Scene */
-    #ending-section {
+    /* Tap prompt for final ending */
+    #tap-ending-prompt {
       text-align: center;
-      padding: 80px 20px 40px;
-      margin-top: 50px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 20px;
+      margin-top: 30px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 1.5s ease;
     }
 
-    .ending-text {
-      font-size: 1.1rem;
-      color: #d1d1d1;
-      line-height: 1.8;
-      margin-bottom: 15px;
-    }
-
-    .birthday-end {
-      font-size: 1.4rem;
+    .tap-ending-btn {
+      display: inline-block;
+      padding: 12px 25px;
+      border: 1px solid rgba(255, 209, 220, 0.4);
+      background: rgba(255, 209, 220, 0.05);
+      border-radius: 25px;
       color: #ffd1dc;
-      margin-top: 20px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      animation: pulse 2s infinite alternate;
     }
 
-    /* Music Button */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    /* Fullscreen Ending Overlay */
+    #ending-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000;
+      z-index: 500;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      padding: 20px;
+    }
+
     .music-control {
       position: fixed;
       bottom: 20px;
@@ -272,7 +303,6 @@
 </head>
 <body>
 
-  <!-- Audio -->
   <audio id="music-idfc" loop>
     <source src="idfc-instrumental.mp3" type="audio/mpeg">
   </audio>
@@ -286,7 +316,7 @@
     <div class="landing-text">Touch the Moon to Begin</div>
   </div>
 
-  <!-- Cinematic Overlay -->
+  <!-- 2s Cinematic Text -->
   <div id="cinematic-overlay">
     <div class="cinematic-text">Every star has a story...
       Tonight, this one is yours.</div>
@@ -294,7 +324,7 @@
 
   <button class="music-control" id="music-btn" onclick="toggleAudio()">🎵 IDFC (Instrumental)</button>
 
-  <!-- Main Content -->
+  <!-- Main Universe Content -->
   <div id="universe-main">
     
     <div class="header-section">
@@ -304,7 +334,6 @@
       <div class="memorial-counter">
         <span class="date-range">17 December 2024 → Today</span>
         
-        <!-- Live Counter Grid -->
         <div class="timer-grid">
           <div class="timer-box"><span class="timer-num" id="days">0</span><span class="timer-label">Days</span></div>
           <div class="timer-box"><span class="timer-num" id="hours">0</span><span class="timer-label">Hours</span></div>
@@ -318,7 +347,7 @@
       </div>
     </div>
 
-    <!-- Letter Section -->
+    <!-- Letter -->
     <div class="card">
       <h2 class="card-title">A Little Corner For You</h2>
       <div class="letter-body">
@@ -352,36 +381,43 @@ Happy Birthday, Afsara. 🦋✨
       </div>
     </div>
 
-    <!-- Gallery Section -->
+    <!-- One-by-One Animated Photo Gallery -->
     <div class="card">
-      <h2 class="card-title">Captured Memories</h2>
-      <div class="gallery">
-        <img src="photo1.jpg" alt="Memory 1">
-        <img src="photo2.jpg" alt="Memory 2">
-        <img src="photo3.jpg" alt="Memory 3">
-        <img src="photo4.jpg" alt="Memory 4">
-        <img src="photo5.jpg" alt="Memory 5">
-        <img src="photo6.jpg" alt="Memory 6">
-        <img src="photo7.jpg" alt="Memory 7">
-        <img src="photo8.jpg" alt="Memory 8">
-        <img src="photo9.jpg" alt="Memory 9">
-        <img src="photo10.jpg" alt="Memory 10">
-        <img src="photo11.jpg" alt="Memory 11">
+      <h2 class="card-title">Captured Moments</h2>
+      <div class="animated-gallery">
+        <img class="photo-slide" src="photo1.jpg" alt="Memory 1">
+        <img class="photo-slide" src="photo2.jpg" alt="Memory 2">
+        <img class="photo-slide" src="photo3.jpg" alt="Memory 3">
+        <img class="photo-slide" src="photo4.jpg" alt="Memory 4">
+        <img class="photo-slide" src="photo5.jpg" alt="Memory 5">
+        <img class="photo-slide" src="photo6.jpg" alt="Memory 6">
+        <img class="photo-slide" src="photo7.jpg" alt="Memory 7">
+        <img class="photo-slide" src="photo8.jpg" alt="Memory 8">
+        <img class="photo-slide" src="photo9.jpg" alt="Memory 9">
+        <img class="photo-slide" src="photo10.jpg" alt="Memory 10">
+        <img class="photo-slide" src="photo11.jpg" alt="Memory 11">
       </div>
     </div>
 
-    <!-- Ending Section -->
-    <div id="ending-section">
-      <div class="moon" style="width: 70px; height: 70px; margin: 0 auto 20px;"></div>
-      <p class="ending-text">"Some people make the world a little brighter just by being in it."</p>
-      <h2 class="birthday-end">Happy Birthday, Afsara. 🦋✨</h2>
-      <p class="from-to" style="margin-top: 15px;">— Mahin 🌙</p>
+    <!-- Tap to Reveal Final Screen Button -->
+    <div id="tap-ending-prompt" onclick="showFinalEnding()">
+      <div class="tap-ending-btn">✨ Tap here for one last message ✨</div>
     </div>
 
   </div>
 
+  <!-- Final Dark Screen Overlay -->
+  <div id="ending-overlay">
+    <div class="moon" style="width: 80px; height: 80px; margin-bottom: 30px;"></div>
+    <p style="font-size: 1.1rem; color: #d1d1d1; line-height: 1.8; margin-bottom: 15px;">
+      "Some people make the world a little brighter just by being in it."
+    </p>
+    <h2 style="font-size: 1.5rem; color: #ffd1dc; margin-top: 15px;">Happy Birthday, Afsara. 🦋✨</h2>
+    <p style="font-size: 1rem; color: rgba(255,255,255,0.6); margin-top: 20px;">— Mahin 🌙</p>
+  </div>
+
   <script>
-    // Stars Animation
+    // Stars Background
     const sky = document.getElementById('sky-bg');
     for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
@@ -396,22 +432,15 @@ Happy Birthday, Afsara. 🦋✨
       sky.appendChild(star);
     }
 
-    // Live Countdown Timer (17 Dec 2024)
+    // Live Countdown
     const startDate = new Date("December 17, 2024 00:00:00").getTime();
-
     function updateTimer() {
       const now = new Date().getTime();
       const diff = now - startDate;
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById("days").innerText = days;
-      document.getElementById("hours").innerText = hours;
-      document.getElementById("minutes").innerText = minutes;
-      document.getElementById("seconds").innerText = seconds;
+      document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
     }
     setInterval(updateTimer, 1000);
     updateTimer();
@@ -438,9 +467,49 @@ Happy Birthday, Afsara. 🦋✨
         setTimeout(() => {
           cinematic.style.display = 'none';
           main.style.display = 'block';
-          setTimeout(() => main.style.opacity = '1', 100);
+          setTimeout(() => {
+            main.style.opacity = '1';
+            startPhotoAnimation(); // Start photo sequence
+          }, 100);
         }, 1000);
       }, 2000);
+    }
+
+    // Sequential Photo Slideshow Logic
+    function startPhotoAnimation() {
+      const slides = document.querySelectorAll('.photo-slide');
+      let currentSlide = 0;
+      
+      slides[0].classList.add('active'); // Show first photo
+
+      const photoInterval = setInterval(() => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide++;
+
+        if (currentSlide < slides.length) {
+          slides[currentSlide].classList.add('active');
+        } else {
+          // All photos shown, show final loop and display ending prompt
+          slides[slides.length - 1].classList.add('active');
+          clearInterval(photoInterval);
+          document.getElementById('tap-ending-prompt').style.opacity = '1';
+        }
+      }, 3500); // Changes photo every 3.5 seconds
+    }
+
+    // Transition to Final Dark Ending Screen on Tap
+    function showFinalEnding() {
+      const main = document.getElementById('universe-main');
+      const endingOverlay = document.getElementById('ending-overlay');
+
+      main.style.opacity = '0';
+      setTimeout(() => {
+        main.style.display = 'none';
+        endingOverlay.style.display = 'flex';
+        setTimeout(() => {
+          endingOverlay.style.opacity = '1';
+        }, 50);
+      }, 1500);
     }
 
     function toggleAudio() {
