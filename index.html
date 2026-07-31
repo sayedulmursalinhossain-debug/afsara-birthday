@@ -12,23 +12,22 @@
       padding: 0;
     }
     body {
-      background: #000000;
+      background: #050510;
       color: #ffffff;
       font-family: 'Georgia', serif;
       overflow-x: hidden;
       min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
     }
 
-    /* Ambient Night Sky & Aurora */
+    /* Cinematic Sky & Aurora Canvas Background */
     #sky-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: -2;
-      background: #000000;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 30%, #0a0c27 0%, #020208 100%);
     }
 
     .aurora {
@@ -39,450 +38,292 @@
       height: 100vh;
       z-index: -1;
       pointer-events: none;
-      background: radial-gradient(circle at 50% 10%, rgba(60, 10, 100, 0.15), transparent 60%),
-                  radial-gradient(circle at 80% 80%, rgba(10, 60, 60, 0.1), transparent 50%);
-      filter: blur(50px);
-      animation: auroraMove 25s ease-in-out infinite alternate;
-      opacity: 0.7;
+      background: radial-gradient(circle at 50% 20%, rgba(147, 112, 219, 0.25), transparent 60%),
+                  radial-gradient(circle at 20% 50%, rgba(64, 224, 208, 0.15), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(255, 105, 180, 0.15), transparent 50%);
+      filter: blur(40px);
+      animation: auroraMove 15s ease-in-out infinite alternate;
     }
 
     @keyframes auroraMove {
       0% { transform: scale(1) translateY(0); }
-      100% { transform: scale(1.1) translateY(-10px); }
+      100% { transform: scale(1.1) translateY(-20px); }
     }
 
-    /* Opening Screen (Landing) */
-    #opening {
+    /* Intro Landing Screen */
+    #landing {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      padding: 20px;
       cursor: pointer;
-      z-index: 100;
       position: relative;
+    }
+
+    .moon-container {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin-bottom: 25px;
+      border-radius: 50%;
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.4), 0 0 100px rgba(200, 220, 255, 0.2);
+      animation: pulseMoon 4s infinite alternate ease-in-out;
+      transition: transform 0.5s ease;
+    }
+
+    .moon-container:hover {
+      transform: scale(1.08);
     }
 
     .moon {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      background: radial-gradient(circle at 35% 35%, #fdfdfd 0%, #e8e8e8 60%, #b2b2b2 100%);
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
-      margin-bottom: 25px;
-      box-shadow: 0 0 35px rgba(255, 255, 255, 0.4);
-      animation: pulseMoon 5s infinite alternate ease-in-out;
-      transition: all 0.5s ease;
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e0e0e0 50%, #999999 100%);
     }
 
     @keyframes pulseMoon {
-      0% { box-shadow: 0 0 35px rgba(255, 255, 255, 0.4); transform: scale(1); }
-      100% { box-shadow: 0 0 55px rgba(255, 255, 255, 0.6); transform: scale(1.03); }
+      0% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); }
+      100% { box-shadow: 0 0 70px rgba(255, 255, 255, 0.6), 0 0 120px rgba(180, 200, 255, 0.3); }
     }
 
     .landing-text {
-      font-size: 1.1rem;
+      font-size: 1.5rem;
       letter-spacing: 2px;
-      color: rgba(220, 220, 220, 0.8);
-      animation: fadeInLandingText 3s ease-out;
+      color: #e0e6ed;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      animation: fadeInText 2s ease-in-out;
     }
 
-    @keyframes fadeInLandingText {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Cinematic 2s Text Overlay */
-    #cinematic-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 200;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1s ease-in;
-    }
-
-    .cinematic-text {
-      font-size: 1.4rem;
-      line-height: 2;
-      color: #e0e0e0;
-      white-space: pre-line;
+    .tap-hint {
+      font-size: 0.9rem;
+      margin-top: 15px;
+      opacity: 0.7;
       letter-spacing: 1px;
     }
 
-    /* Main Container (Universe) */
-    #universe-main {
+    /* Main Content (Hidden initially) */
+    #main-content {
       display: none;
       opacity: 0;
-      transition: opacity 3s ease-in-out;
-      padding: 60px 20px 100px;
+      transition: opacity 2s ease-in-out;
+      padding: 40px 20px;
       max-width: 900px;
       margin: 0 auto;
-      z-index: 10;
-      position: relative;
     }
 
-    .header-section {
+    .hero-title {
       text-align: center;
-      margin-bottom: 60px;
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #fff, #ffd1dc, #e0c3fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
 
-    .from-to {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 2px;
-      margin-top: -10px;
-      margin-bottom: 30px;
-    }
-
-    .memorial-counter {
-      margin: 40px auto;
-      padding: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+    .hero-subtitle {
       text-align: center;
-      color: #f1f1f1;
-      font-size: 1rem;
-      line-height: 1.8;
-      max-width: 600px;
-    }
-
-    .date-range {
       font-size: 1.1rem;
-      color: #ffd1dc;
-      letter-spacing: 1px;
-      display: block;
-      margin-bottom: 15px;
-    }
-
-    /* Content Cards (Letter and Gallery) */
-    .card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 35px;
+      color: #a0aab5;
       margin-bottom: 50px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     }
 
-    .card-title {
-      font-size: 1.7rem;
+    /* Timeline & Letter */
+    .section-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 50px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
       color: #ffd1dc;
-      margin-bottom: 25px;
       text-align: center;
     }
 
     .letter-body {
       font-size: 1.1rem;
       line-height: 1.8;
-      color: #e2e8f0;
+      color: #d1d5db;
       white-space: pre-line;
       text-align: justify;
     }
 
-    /* Gallery Grid (11 photos) */
-    .gallery {
+    /* Gallery Grid */
+    .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
       margin-top: 20px;
     }
 
-    .gallery img {
-      width: 100%;
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
       aspect-ratio: 3/4;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-      transition: all 0.4s ease;
+      transition: transform 0.5s ease;
     }
 
-    .gallery img:hover {
-      transform: scale(1.05) translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+    .gallery-item:hover img {
+      transform: scale(1.08);
     }
 
-    /* Ending Scene Overlay */
-    #ending-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000000;
-      z-index: 300;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1.5s ease-in;
-    }
-
-    #ending-overlay .moon-end {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 30px;
-      animation: none;
-      opacity: 0.8;
-    }
-
-    .ending-text {
-      font-size: 1.1rem;
-      color: #d1d1d1;
-      line-height: 1.8;
-      margin-bottom: 10px;
-      opacity: 0;
-    }
-
-    .birthday-end {
-      font-size: 1.3rem;
-      color: #e0e0e0;
-      margin-top: 15px;
-      opacity: 0;
-    }
-
-    @keyframes fadeInEnding {
-      0% { opacity: 0; transform: translateY(5px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Music Button */
-    .music-control {
+    /* Music Control Button */
+    .music-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      padding: 10px 18px;
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
       cursor: pointer;
-      z-index: 200;
+      z-index: 100;
       font-size: 0.9rem;
-      display: none;
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
     }
-    .music-control:hover { opacity: 1; }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Audios -->
-  <audio id="music-idfc" loop>
-    <source src="idfc-instrumental.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Background Elements -->
   <div id="sky-bg"></div>
   <div class="aurora"></div>
 
-  <!-- Opening Screen -->
-  <div id="opening" onclick="startVision()">
-    <div class="moon"></div>
-    <div class="landing-text">Touch the Moon to Begin</div>
-  </div>
+  <!-- Audio Element -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="idfc-instrumental.mp3" type="audio/mpeg">
+  </audio>
 
-  <!-- 2 sec Cinematic Overlay -->
-  <div id="cinematic-overlay">
-    <div class="cinematic-text">Every star has a story...
-      Tonight, this one is yours.</div>
-  </div>
+  <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🎵 Sound On</button>
 
-  <!-- Music Control Button (Hidden initially) -->
-  <button class="music-control" id="music-btn" onclick="toggleAudio()">🎵 IDFC (Instrumental)</button>
-
-  <!-- Main Content (Universe) -->
-  <div id="universe-main">
-    
-    <div class="header-section">
-      <h1 style="font-size: 2.2rem; color: #ffd1dc; margin-bottom: 5px;">Afsara 🦋✨</h1>
-      <p class="from-to">From: Mahin 🌙</p>
-    
-      <div class="memorial-counter">
-        <span class="date-range">17 December 2024 → Today</span>
-        "Every moment we've shared became a memory worth keeping.
-        From December 17, 2024 until today."
-      </div>
+  <!-- Landing Screen -->
+  <div id="landing" onclick="enterSite()">
+    <div class="moon-container">
+      <div class="moon"></div>
     </div>
+    <div class="landing-text">Happy Birthday, Afsara</div>
+    <div class="tap-hint">Tap the moon to enter your sky ✨</div>
+  </div>
 
-    <!-- Letter Section -->
-    <div class="card">
-      <h2 class="card-title">A Little Corner For You</h2>
+  <!-- Main Content Area -->
+  <div id="main-content">
+    <h1 class="hero-title">Happy Birthday, Afsara ❤️</h1>
+    <p class="hero-subtitle">December 17, 2024 • A Night Written in the Stars</p>
+
+    <!-- Romantic Letter Section -->
+    <div class="section-card">
+      <h2 class="section-title">A Letter for You</h2>
       <div class="letter-body">
-Hey Afsara,
+Dearest Afsara,
 
-If you're reading this, then welcome to a little corner of the universe that I made just for you.
+Under this endless canvas of stars, I wanted to create a place as magical and serene as the feelings you bring into my life. Every moment shared with you feels like a quiet, beautiful melody playing softly in the background.
 
-Happy Birthday. 🤍
-
-I don't know if words can ever fully express how grateful I am that you exist, but today I want to try.
-
-You have a way of making ordinary moments feel special without even realizing it. Your smile, your laugh, the little things you do—they stay in my mind much longer than you probably know.
-
-I hope this new year of your life brings you peace when things get difficult, strength when life feels heavy, and endless reasons to smile. I hope every dream you quietly keep in your heart finds its way to reality.
-
-No matter how many stars fill the sky tonight, I think they'll still have a hard time shining as brightly as you do.
-
-Thank you for being you.
-
-I hope one day you'll look back at this page and smile, knowing someone cared enough to make something just for you.
-
-So here's to another year of beautiful memories, unexpected adventures, and countless happy moments.
-
-Keep shining, keep dreaming, and never forget how special you are.
-
-Once again...
-
-Happy Birthday, Afsara. 🦋✨
-
-— Mahin 🌙
+Happy Birthday! May your path always be illuminated by the same warmth and beauty you share so effortlessly with the world. Here’s to you, your smile, and all the memories we are yet to create.
       </div>
     </div>
 
-    <!-- Gallery Section (11 images) -->
-    <div class="card">
-      <h2 class="card-title">Captured Memories</h2>
-      <div class="gallery">
-        <img src="photo1.jpg" alt="Afsara Memory 1" loading="lazy">
-        <img src="photo2.jpg" alt="Afsara Memory 2" loading="lazy">
-        <img src="photo3.jpg" alt="Afsara Memory 3" loading="lazy">
-        <img src="photo4.jpg" alt="Afsara Memory 4" loading="lazy">
-        <img src="photo5.jpg" alt="Afsara Memory 5" loading="lazy">
-        <img src="photo6.jpg" alt="Afsara Memory 6" loading="lazy">
-        <img src="photo7.jpg" alt="Afsara Memory 7" loading="lazy">
-        <img src="photo8.jpg" alt="Afsara Memory 8" loading="lazy">
-        <img src="photo9.jpg" alt="Afsara Memory 9" loading="lazy">
-        <img src="photo10.jpg" alt="Afsara Memory 10" loading="lazy">
-        <img src="photo11.jpg" alt="Afsara Memory 11" loading="lazy">
+    <!-- Photo Gallery (11 Photos) -->
+    <div class="section-card">
+      <h2 class="section-title">Captured Memories</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="photo1.jpg" alt="Afsara Memory 1" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo2.jpg" alt="Afsara Memory 2" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo3.jpg" alt="Afsara Memory 3" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo4.jpg" alt="Afsara Memory 4" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo5.jpg" alt="Afsara Memory 5" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo6.jpg" alt="Afsara Memory 6" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo7.jpg" alt="Afsara Memory 7" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo8.jpg" alt="Afsara Memory 8" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo9.jpg" alt="Afsara Memory 9" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo10.jpg" alt="Afsara Memory 10" loading="lazy"></div>
+        <div class="gallery-item"><img src="photo11.jpg" alt="Afsara Memory 11" loading="lazy"></div>
       </div>
     </div>
-
-  </div> <!-- End Universe Main -->
-
-  <!-- Ending Scene Overlay -->
-  <div id="ending-overlay">
-    <div class="moon moon-end"></div>
-    <p class="ending-text" id="end-quote">"Some people make the world a little brighter just by being in it."</p>
-    <h2 class="birthday-end" id="end-hbd">Happy Birthday, Afsara. 🦋✨</h2>
-    <p class="ending-text" id="end-mahin" style="margin-top: 15px; font-size: 0.9rem;">— Mahin 🌙</p>
   </div>
 
   <script>
-    // Starfield Background
+    // Starfield Background Generator
     const sky = document.getElementById('sky-bg');
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
       star.style.position = 'absolute';
       star.style.left = `${Math.random() * 100}%`;
       star.style.top = `${Math.random() * 100}%`;
-      star.style.width = `${Math.random() * 2.5}px`;
+      star.style.width = `${Math.random() * 3}px`;
       star.style.height = star.style.width;
       star.style.backgroundColor = '#ffffff';
       star.style.borderRadius = '50%';
-      star.style.opacity = Math.random() * 0.8;
-      star.style.animation = `twinkle ${2 + Math.random() * 5}s infinite alternate`;
+      star.style.opacity = Math.random();
+      star.style.animation = `twinkle ${2 + Math.random() * 4}s infinite alternate`;
       sky.appendChild(star);
     }
-    
-    // Twinkle Animation dynamically
+
+    // Add Keyframes for Twinkle dynamically
     const style = document.createElement('style');
-    style.innerHTML = `@keyframes twinkle { 0% { opacity: 0.1; } 100% { opacity: 0.9; } }`;
+    style.innerHTML = `@keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 1; } }`;
     document.head.appendChild(style);
 
-    const musicIDFC = document.getElementById('music-idfc');
-    const musicBtn = document.getElementById('music-btn');
+    // Audio & Transition Controls
+    const music = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-toggle');
 
-    // --- Core Vision Start Function ---
-    function startVision() {
-      const opening = document.getElementById('opening');
-      const cinematic = document.getElementById('cinematic-overlay');
-      const main = document.getElementById('universe-main');
+    function enterSite() {
+      const landing = document.getElementById('landing');
+      const mainContent = document.getElementById('main-content');
+      
+      landing.style.transition = 'opacity 1s ease';
+      landing.style.opacity = '0';
+      
+      // Play Music
+      music.play().then(() => {
+        musicBtn.innerHTML = '🎵 Sound Off';
+      }).catch(err => {
+        console.log("Audio play prevented");
+      });
 
-      // 1. Hide opening screen immediately
-      opening.style.display = 'none';
-
-      // 2. Show cinematic text for 2 sec
-      cinematic.style.display = 'flex';
-      setTimeout(() => cinematic.style.opacity = '1', 50);
-
-      // 3. After 2 sec, music starts, text fades, and main fades in
       setTimeout(() => {
-        // Start Music
-        musicIDFC.play().then(() => {
-          musicBtn.style.display = 'block';
-        }).catch(e => console.log("Audio waiting for full interaction"));
-
-        // Cinematic text fade out
-        cinematic.style.opacity = '0';
-        
+        landing.style.display = 'none';
+        mainContent.style.display = 'block';
         setTimeout(() => {
-          cinematic.style.display = 'none';
-          // Universe fade in
-          main.style.display = 'block';
-          setTimeout(() => main.style.opacity = '1', 100);
-        }, 1000); // 1 sec fade out time
-      }, 2000); // 2 sec total text duration
+          mainContent.style.opacity = '1';
+        }, 50);
+      }, 1000);
     }
 
-    // Toggle Music
-    function toggleAudio() {
-      if (musicIDFC.paused) {
-        musicIDFC.play();
-        musicBtn.innerHTML = '🎵 Music On';
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        musicBtn.innerHTML = '🎵 Sound Off';
       } else {
-        musicIDFC.pause();
-        musicBtn.innerHTML = '🎵 Music Off';
+        music.pause();
+        musicBtn.innerHTML = '🎵 Sound On';
       }
     }
-
-    // --- Handle Ending Scene ---
-    window.onscroll = function() {
-      const main = document.getElementById('universe-main');
-      const endOverlay = document.getElementById('ending-overlay');
-      const quote = document.getElementById('end-quote');
-      const hbd = document.getElementById('end-hbd');
-      const mahin = document.getElementById('end-mahin');
-
-      // Detect if user has reached bottom
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
-        
-        main.style.opacity = '0'; // Main content fades out
-        
-        setTimeout(() => {
-          main.style.display = 'none';
-          endOverlay.style.display = 'flex';
-          setTimeout(() => {
-            endOverlay.style.opacity = '1';
-            
-            // Sequential fade in for ending text
-            setTimeout(() => {
-              quote.style.animation = 'fadeInEnding 2s forwards';
-              
-              // 2 sec pause before HBD
-              setTimeout(() => {
-                hbd.style.animation = 'fadeInEnding 2s forwards';
-                mahin.style.animation = 'fadeInEnding 2s forwards';
-              }, 4000); // 2s show quote + 2s pause
-            }, 1000); 
-          }, 50);
-        }, 1500); 
-      }
-    };
   </script>
 </body>
 </html>
